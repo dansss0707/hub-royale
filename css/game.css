@@ -1,0 +1,124 @@
+/* =========================================================
+   AUTHENTIC 2000s SOURCE ENGINE / HL2 GMOD IN-GAME HUD
+   ========================================================= */
+
+#view-game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #080a0d;
+}
+
+#game-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#game-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: 'Share Tech Mono', 'Lucida Console', monospace;
+}
+
+/* =========================================================
+   CENTER ZONE COLLAPSE / ROUND TIMER (VGUI SOURCE CLOCK)
+   ========================================================= */
+
+#zone-timer {
+  align-self: center;
+  background: rgba(18, 14, 10, 0.88);
+  border: 1px solid #000;
+  outline: 1px solid rgba(255, 176, 0, 0.35);
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08), 
+    inset -1px -1px 0 rgba(0, 0, 0, 0.6), 
+    0 4px 14px rgba(0, 0, 0, 0.8);
+  border-radius: 0px !important; /* Strips rounded pill style */
+  padding: 6px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 176, 0, 0.7);
+  position: relative;
+}
+
+/* Subtle CRT scanlines across timer panel */
+#zone-timer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+#timer-val {
+  font-family: 'Teko', 'Trebuchet MS', sans-serif;
+  font-size: 1.8rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ffb000 !important;
+  text-shadow: 0 0 10px rgba(255, 176, 0, 0.75);
+}
+
+/* =========================================================
+   BOTTOM-LEFT HL2 HEALTH POD
+   ========================================================= */
+
+#player-status {
+  width: 220px;
+  background: rgba(18, 14, 10, 0.88);
+  border: 1px solid #000;
+  outline: 1px solid rgba(255, 176, 0, 0.3);
+  border-left: 3px solid #ffb000;
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08), 
+    0 4px 12px rgba(0, 0, 0, 0.8);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+/* Scanlines on health pod */
+#player-status::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* HL2 segmented bar meter */
+.hp-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 176, 0, 0.35);
+  border-radius: 0px !important; /* Strips rounded modern bar */
+  overflow: hidden;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.9);
+}
+
+#hp-fill {
+  width: 100%;
+  height: 100%;
+  background: #ffb000 !important; /* Classic HL2 Amber */
+  box-shadow: 0 0 8px rgba(255, 176, 0, 0.8);
+  transition: width 0.1s linear;
+}

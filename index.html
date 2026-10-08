@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battle Royale 2D</title>
+  
+  <!-- Global Reset & Full-Screen Layout Fix -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      min-height: 100vh;
+      background-color: #08090b;
+      overflow-x: hidden;
+    }
+    #app-root {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      min-height: 100vh;
+    }
+    #app-root > section,
+    #app-root > div,
+    .view {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      width: 100%;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+  </style>
+
+  <!-- Fonts & Core Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/lobby.css" />
+  <link rel="stylesheet" href="css/crates.css" />
+  <link rel="stylesheet" href="css/rooms.css" />
+  <link rel="stylesheet" href="css/game.css" />
+
+  <!-- Supabase JS Client v2 via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- System notifications overlay -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Dynamic Application Root: Views mount and unmount here -->
+  <main id="app-root"></main>
+
+  <!-- Modular Game Engine & Router -->
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

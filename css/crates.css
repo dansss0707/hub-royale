@@ -1,0 +1,276 @@
+/* =========================================================
+   AUTHENTIC 2000s GMOD / SOURCE VGUI CRATES & UNBOXING VIEW
+   ========================================================= */
+
+#view-crates {
+  background: radial-gradient(circle at center, #222933 0%, #12161c 65%, #090b0e 100%) !important;
+  padding: 30px;
+  align-items: center;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif !important;
+  color: #d1d9e2 !important;
+  user-select: none;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Subtle CRT scanline overlay */
+#view-crates::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.crates-layout {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* HEADER BAR */
+.crates-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #2a333d;
+}
+
+.crates-header h2 {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* =========================================================
+   THE CRATE MACHINE (DERMA FRAME STYLE)
+   ========================================================= */
+
+.crate-machine {
+  position: relative;
+  background: #232932 !important;
+  border: 1px solid #14171c !important;
+  outline: 1px solid #36404d !important;
+  border-radius: 0px !important;
+  padding: 26px 20px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08), 
+    inset -1px -1px 0 rgba(0, 0, 0, 0.4), 
+    0 8px 24px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* The vertical needle indicator */
+.spinner-indicator {
+  position: absolute;
+  top: 15px;
+  bottom: 85px;
+  left: 50%;
+  width: 3px !important;
+  background: #ffb000 !important; /* HL2 Amber */
+  transform: translateX(-50%);
+  z-index: 15;
+  box-shadow: 0 0 10px rgba(255, 176, 0, 0.9) !important;
+}
+
+/* Sunken 3D trench for the roulette */
+.spinner-wrapper {
+  width: 100%;
+  max-width: 800px;
+  height: 140px;
+  overflow: hidden;
+  background: #12151b !important;
+  border: 1px solid #0d0f13 !important;
+  border-top: 1px solid #080a0d !important;
+  border-radius: 0px !important;
+  position: relative;
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.spinner-track {
+  display: flex;
+  gap: 10px !important;
+  position: absolute;
+  left: 0;
+  top: 10px;
+  will-change: transform;
+}
+
+/* SPINNER TILE CARDS (Q-SPAWNMENU ICON LOOK) */
+.crate-card {
+  width: 110px;
+  height: 120px;
+  flex-shrink: 0;
+  background: radial-gradient(circle, #38404b 0%, #1a1e24 100%) !important;
+  border: 2px solid #14171b !important;
+  outline: 1px solid #3d4653;
+  border-radius: 0px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Lucida Console', monospace !important;
+  font-size: 0.72rem !important;
+  font-weight: 700;
+  text-align: center;
+  color: #e2e8f0;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.12), 0 2px 8px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Diagonal glass sheen across crate card */
+.crate-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.crate-card .icon {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+/* RARITIES */
+.rarity-common {
+  outline-color: #69788a !important;
+}
+
+.rarity-rare {
+  outline-color: #00d2ff !important; /* Physgun cyan */
+  box-shadow: inset 0 0 12px rgba(0, 210, 255, 0.25), 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
+.rarity-epic {
+  outline-color: #b026ff !important; /* Void purple */
+  box-shadow: inset 0 0 14px rgba(176, 38, 255, 0.28), 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
+.rarity-legendary {
+  outline-color: #ffb000 !important; /* HL2 Amber */
+  box-shadow: inset 0 0 16px rgba(255, 176, 0, 0.35), 0 0 10px rgba(255, 176, 0, 0.4) !important;
+}
+
+/* =========================================================
+   INVENTORY SECTION & GRID
+   ========================================================= */
+
+.inventory-section {
+  background: #232932 !important;
+  border: 1px solid #14171c !important;
+  outline: 1px solid #36404d !important;
+  border-radius: 0px !important;
+  padding: 20px !important;
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08), 
+    inset -1px -1px 0 rgba(0, 0, 0, 0.4), 
+    0 8px 24px rgba(0, 0, 0, 0.7) !important;
+}
+
+.inventory-section h3 {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffb000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 176, 0, 0.25);
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+}
+
+/* INVENTORY ITEM (SPAWN ICON STYLE) */
+.inventory-item {
+  position: relative;
+  background: radial-gradient(circle, #38404b 0%, #1a1e24 100%) !important;
+  border: 2px solid #14171b !important;
+  outline: 1px solid #3d4653;
+  border-radius: 0px !important;
+  padding: 12px 8px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.1s ease !important;
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.7rem;
+  color: #cbd5e1;
+  overflow: hidden;
+}
+
+/* Diagonal glass reflection on items */
+.inventory-item::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.inventory-item:hover {
+  transform: translateY(-2px);
+  outline-color: #ffb000 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), inset 0 0 8px rgba(255, 176, 0, 0.15) !important;
+}
+
+/* EQUIPPED STATUS (CLASSIC SOURCE GREEN BADGE) */
+.inventory-item.equipped {
+  outline-color: #3cd446 !important;
+  box-shadow: 0 0 10px rgba(60, 212, 70, 0.4), inset 0 0 10px rgba(60, 212, 70, 0.2) !important;
+}
+
+.inventory-item.equipped::after {
+  content: "EQUIPPED";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.55rem;
+  background: #3cd446 !important;
+  color: #000000 !important;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 0px !important;
+  letter-spacing: 0.5px;
+}

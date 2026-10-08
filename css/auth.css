@@ -1,0 +1,71 @@
+import { supabase } from './supabase.js';
+
+export async function signUpUser(email, password, username) {
+  const cleanEmail = email.trim();
+  const cleanUsername = username.trim();
+
+  // 1. Check if username is already taken
+  const { data: existingUser, error: checkError } = await supabase
+    .from('profiles')
+    .select('id')
+    .ilike('username', cleanUsername)
+    .maybeSingle();
+
+  if (checkError) {
+    console.error('Username check error:', checkError);
+  }
+
+  if (existingUser) {
+    throw new Error('That username is already taken. Please choose another.');
+  }
+
+  // 2. Perform Supabase Auth Sign Up
+  const { data, error } = await supabase.auth.signUp({
+    email: cleanEmail,
+    password: password,
+    options: {
+      data: {
+        username: cleanUsername
+      }
+    }
+  });
+
+  if (error) throw error;
+  return data;
+}
+
+export async function loginUser(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.trim(),
+    password: password
+  });
+
+  if (error) throw error;
+  return data;
+}
+
+export async function logoutUser() {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+}
+
+export async function getCurrentUser() {
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) return null;
+  return user;
+}
+
+// Full profile fetch ensuring is_verified and all stats are loaded into AppState
+export async function getProfile(userId) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('getProfile auth error:', error);
+    throw error;
+  }
+  return data;
+}

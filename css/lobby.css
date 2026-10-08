@@ -1,0 +1,823 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Teko:wght@500;700&display=swap');
+
+/* =========================================================
+   1. GLOBAL SOURCE / GMOD 2000s ENGINE VARIABLES
+   ========================================================= */
+:root {
+  /* Classic Half-Life 2 & Garry's Mod Palette */
+  --hl2-amber: #ffb000;
+  --hl2-amber-bright: #ffd040;
+  --hl2-amber-dim: rgba(255, 176, 0, 0.2);
+  --hl2-amber-glow: 0 0 8px rgba(255, 176, 0, 0.65);
+
+  --gmod-blue: #00a2ff;
+  --gmod-blue-dark: #0066aa;
+  --physgun-blue: #00d2ff;
+  
+  --source-green: #3cd446;
+  --source-red: #ff3333;
+  --tactical-amber: #ffb000;
+  --terminal-green: #3cd446;
+
+  /* VGUI Charcoal & Slate Bevels */
+  --vgui-dark: #12100d;
+  --vgui-panel: rgba(22, 19, 15, 0.86);
+  --vgui-panel-bright: rgba(38, 32, 24, 0.92);
+  --vgui-border-outer: #000000;
+  --vgui-border-inner: rgba(255, 176, 0, 0.28);
+  --border-dim: rgba(255, 176, 0, 0.25);
+  --border-sharp: rgba(255, 176, 0, 0.5);
+
+  --text-primary: #e6dfd1;
+  --text-muted: #9e9382;
+  --text-dim: #605749;
+
+  /* Authentic Valve / Source Engine Typography */
+  --font-display: 'Trebuchet MS', 'Segoe UI', Tahoma, sans-serif;
+  --font-hud: 'Share Tech Mono', 'Lucida Console', monospace;
+  --font-mono: 'Lucida Console', 'Courier New', monospace;
+  --font-digits: 'Teko', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-display);
+  background-color: var(--vgui-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  user-select: none;
+
+  /* Classic Source CRT scanline overlay + dark vignette */
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(30, 24, 16, 0.6) 0%, rgba(10, 8, 6, 0.95) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 50%);
+  background-size: 100% 100%, 100% 4px;
+}
+
+#app-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+}
+
+.view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.view.hidden {
+  display: none !important;
+}
+
+/* =========================================================
+   2. REUSABLE VGUI BUTTONS & CONTROLS
+   ========================================================= */
+.btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 0px !important;
+  clip-path: none !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.8);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.9);
+  background: linear-gradient(180deg, #322b22 0%, #1e1913 100%);
+  color: var(--text-primary);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.08s ease, color 0.08s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  outline: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.btn:hover {
+  background: linear-gradient(180deg, #483d2e 0%, #292219 100%);
+  color: var(--hl2-amber);
+}
+
+.btn:active {
+  border-top: 2px solid rgba(0, 0, 0, 0.9);
+  border-left: 1px solid rgba(0, 0, 0, 0.8);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: #19140f;
+  transform: translateY(1px);
+}
+
+.btn.primary-btn {
+  background: linear-gradient(180deg, #996800 0%, #593c00 100%);
+  border-top: 1px solid rgba(255, 215, 100, 0.4);
+  border-left: 1px solid rgba(255, 215, 100, 0.3);
+  border-right: 1px solid #1a1200;
+  border-bottom: 2px solid #000000;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.btn.primary-btn:hover {
+  background: linear-gradient(180deg, #bf8200 0%, #734d00 100%);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 176, 0, 0.4);
+}
+
+.btn.secondary-btn {
+  background: linear-gradient(180deg, #24201a 0%, #151310 100%);
+  border-color: rgba(255, 176, 0, 0.15);
+}
+
+.btn.secondary-btn:hover {
+  border-color: var(--hl2-amber);
+  color: var(--hl2-amber);
+}
+
+.btn.small {
+  padding: 4px 12px;
+  font-size: 0.72rem;
+}
+
+/* Garry's Mod Hint Toast */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 9999;
+}
+
+.toast {
+  font-family: var(--font-hud);
+  font-size: 0.78rem;
+  padding: 10px 16px;
+  background: rgba(14, 11, 8, 0.95);
+  border: 1px solid var(--hl2-amber);
+  border-left: 4px solid var(--hl2-amber);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
+  color: var(--hl2-amber-bright);
+  text-shadow: var(--hl2-amber-glow);
+  animation: gmodPop 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes gmodPop {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* =========================================================
+   3. AUTH VIEW (#view-auth)
+   ========================================================= */
+#view-auth {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #222933 0%, #12161c 60%, #090b0e 100%) !important;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif !important;
+  color: #d1d9e2;
+  user-select: none;
+  overflow: hidden;
+}
+
+#view-auth::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.auth-crosshair {
+  position: absolute;
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.9rem;
+  color: #3e4a59;
+  pointer-events: none;
+  z-index: 2;
+}
+.auth-crosshair.top-left { top: 20px; left: 24px; }
+.auth-crosshair.top-right { top: 20px; right: 24px; }
+
+.auth-telemetry {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.68rem;
+  background: rgba(12, 16, 20, 0.85);
+  border: 1px solid #1e2530;
+  border-left: 2px solid #ffb000;
+  padding: 6px 12px;
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.telemetry-row {
+  display: flex;
+  gap: 8px;
+}
+.telemetry-row .label { color: #6e7f94; }
+.telemetry-row .val { color: #cbd5e1; font-weight: bold; }
+.telemetry-row .val.online { color: #55b55e; }
+.telemetry-row .val.offline { color: #ff3333; }
+.telemetry-row .val.warn { color: #ffb000; }
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #363d47;
+  border: 1px solid #14171c;
+  outline: 1px solid #4a5462;
+  position: relative;
+  padding: 32px 28px 24px;
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.15),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.5),
+    0 16px 40px rgba(0, 0, 0, 0.85);
+  border-radius: 0px !important;
+  z-index: 10;
+}
+.auth-card::before,
+.auth-card::after {
+  display: none !important;
+}
+
+.logo {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-align: center;
+  color: #ffffff;
+  line-height: 1;
+  text-transform: none;
+  font-style: normal;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+.logo span {
+  color: #ffb000;
+  text-shadow: 0 0 10px rgba(255, 176, 0, 0.5);
+}
+
+.subtitle {
+  font-family: 'Lucida Console', monospace;
+  color: #8b9bb0;
+  text-align: center;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 6px;
+  margin-bottom: 22px;
+}
+
+.tab-buttons {
+  display: flex;
+  background: #23282f;
+  border: 1px solid #14171a;
+  border-bottom: 1px solid #4a5462;
+  padding: 2px 2px 0 2px;
+  margin-bottom: 20px;
+  gap: 2px;
+}
+
+.tab-buttons button {
+  flex: 1;
+  background: #2b313a;
+  border: 1px solid #1b1f24;
+  border-bottom: none;
+  color: #8b99a8;
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: all 0.08s ease;
+  border-radius: 0;
+}
+.tab-buttons button:hover {
+  background: #363d47;
+  color: #ffffff;
+}
+.tab-buttons button.active {
+  background: #363d47;
+  color: #ffb000;
+  border-top: 2px solid #ffb000;
+  border-bottom: 1px solid #363d47;
+  margin-bottom: -1px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.auth-form.hidden {
+  display: none;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field label {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+.field input {
+  background: #1b1f26;
+  border: 1px solid #101317;
+  border-top: 1px solid #0a0c0e;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 8px 10px;
+  color: #ffffff;
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.85rem;
+  outline: none;
+  border-radius: 0px !important;
+  transition: border-color 0.1s ease, box-shadow 0.1s ease;
+}
+.field input:focus {
+  border-color: #ffb000;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.8), 0 0 6px rgba(255, 176, 0, 0.5);
+}
+.field .hint {
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.68rem;
+  min-height: 14px;
+  margin-top: 2px;
+}
+.hint.error {
+  color: #ff4d4d;
+}
+
+/* =========================================================
+   4. LOBBY VIEW (#view-lobby)
+   ========================================================= */
+#view-lobby {
+  background: radial-gradient(circle at 50% 45%, #2a323d 0%, #171c22 60%, #0d1014 100%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif !important;
+  color: #d8e2ec !important;
+  user-select: none;
+}
+
+#view-lobby::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 32px;
+  background: rgba(22, 27, 34, 0.95);
+  border-bottom: 1px solid #0a0c0f !important;
+  box-shadow: 0 1px 0 rgba(255, 176, 0, 0.2), 0 6px 16px rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(4px);
+  z-index: 20;
+  width: 100%;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rank-insignia {
+  font-family: 'Lucida Console', monospace;
+  font-weight: bold;
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+  color: #ffb000;
+  background: #14181f;
+  border: 1px solid #0d1014;
+  border-left: 3px solid #ffb000;
+  padding: 6px 10px;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.8);
+  clip-path: none !important;
+  border-radius: 0;
+}
+.rank-insignia span {
+  color: #ffffff;
+  font-size: 0.85rem;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.combat-tag {
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.65rem;
+  color: #55b55e;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.lobby-currencies {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-pill {
+  font-family: 'Lucida Console', monospace;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #181d24;
+  border: 1px solid #2d3540;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+  border-radius: 2px;
+}
+.stat-pill small {
+  color: #7a8b9e;
+  font-size: 0.62rem;
+  margin-left: 2px;
+}
+.stat-pill.highlight {
+  border-color: #0099ff;
+  color: #00aaff;
+}
+
+.deck-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr 320px;
+  align-items: center;
+  flex: 1;
+  padding: 24px 40px;
+  z-index: 10;
+  gap: 28px;
+  width: 100%;
+}
+
+.deck-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rail-header {
+  border-bottom: 2px solid #2a333d;
+  padding-bottom: 6px;
+}
+.rail-header .subtext {
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.62rem;
+  color: #69788a;
+  letter-spacing: 1px;
+}
+.rail-header h3 {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #e2e8f0;
+  text-transform: uppercase;
+}
+
+.action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deck-action-card {
+  position: relative;
+  background: #232932;
+  border: 1px solid #14171c;
+  outline: 1px solid #36404d;
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08), 
+    inset -1px -1px 0 rgba(0, 0, 0, 0.4), 
+    0 4px 10px rgba(0, 0, 0, 0.5);
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  clip-path: none !important;
+  border-radius: 0px !important;
+  transition: all 0.1s ease;
+}
+
+.deck-action-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 4px; height: 100%;
+  background: #3b4654;
+  transition: background 0.1s ease;
+}
+
+.card-stencil {
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  color: #6f8094;
+}
+
+.card-body h2 {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.card-body p {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 0.72rem;
+  color: #9aa8b8;
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+.card-tag {
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.62rem;
+  color: #7d90a4;
+  align-self: flex-start;
+  padding: 2px 6px;
+  background: #14181e;
+  border: 1px solid #2a333e;
+  border-radius: 2px;
+}
+
+.deck-action-card:hover {
+  background: #2b333e;
+  outline: 1px solid #ffb000 !important;
+  box-shadow: 
+    inset 0 0 12px rgba(255, 176, 0, 0.12),
+    0 4px 14px rgba(0, 0, 0, 0.7) !important;
+  transform: translateX(4px);
+}
+
+.deck-action-card:hover::before {
+  background: #ffb000;
+  box-shadow: 0 0 6px rgba(255, 176, 0, 0.8);
+}
+
+.deck-action-card:hover .card-body h2 {
+  color: #ffb000;
+}
+
+.deck-action-card:active {
+  transform: translateX(2px) translateY(1px);
+  background: #1c222a;
+}
+
+.deck-action-card.primary {
+  background: linear-gradient(135deg, #2b323c 0%, #1e232b 100%);
+  outline-color: #4a5768;
+}
+.deck-action-card.primary::before {
+  background: #0099ff;
+}
+.deck-action-card.primary:hover::before {
+  background: #ffb000;
+}
+.deck-action-card.primary .card-tag {
+  color: #00aaff;
+  border-color: rgba(0, 170, 255, 0.4);
+}
+
+.deck-action-card.gold::before {
+  background: #ffb000;
+}
+.deck-action-card.gold .card-tag.gold {
+  color: #ffb000;
+  border-color: rgba(255, 176, 0, 0.4);
+}
+
+/* Centerpiece Model Display */
+.deck-centerpiece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 380px;
+}
+
+.pedestal-hologram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 320px;
+}
+
+.pedestal-ring {
+  width: 220px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 176, 0, 0.4);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.9), inset 0 0 8px rgba(255, 176, 0, 0.2);
+  transform: perspective(250px) rotateX(70deg);
+  position: absolute;
+  bottom: 40px;
+  background: radial-gradient(circle, rgba(0,0,0,0.7) 0%, transparent 70%);
+}
+
+.character-pod {
+  position: relative;
+  z-index: 5;
+  margin-bottom: 16px;
+}
+
+.character-sprite {
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle, #3e4652 0%, #181d22 100%);
+  border: 2px solid #14171b;
+  outline: 1px solid #4a5462;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: none !important;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 3D Model Sheen */
+.character-sprite::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.avatar-icon {
+  font-size: 4rem;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7));
+}
+
+.operative-id-plate {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(14, 18, 22, 0.92) !important;
+  border: 1px solid #000000 !important;
+  outline: 1px solid rgba(255, 176, 0, 0.5) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8), inset 0 0 6px rgba(0, 0, 0, 0.7) !important;
+  padding: 6px 20px;
+  z-index: 10;
+  border-radius: 2px;
+}
+
+.plate-class {
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.6rem;
+  color: #7b8e9e;
+  letter-spacing: 1px;
+}
+
+.plate-name {
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffb000 !important;
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.7) !important;
+}
+
+.plate-rarity {
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.65rem;
+  color: #3cd446 !important;
+  text-shadow: 0 0 6px rgba(60, 212, 70, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.deck-ticker {
+  background: #10141a;
+  border-top: 2px solid #0a0c0f;
+  outline: 1px solid #232932;
+  padding: 6px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.68rem;
+  z-index: 20;
+  width: 100%;
+}
+
+.ticker-badge {
+  background: #ffb000;
+  color: #000;
+  font-weight: 700;
+  padding: 2px 6px;
+  letter-spacing: 0.5px;
+  border-radius: 2px;
+}
+
+.ticker-text {
+  display: flex;
+  gap: 16px;
+  color: #7a8a9a;
+}
+
+/* =========================================================
+   5. IN-GAME ARENA & HL2 / GMOD HUD (#game-ui-overlay)
+   ========================================================= */
+.gmod-panel {
+  background: var(--vgui-panel);
+  border: 1px solid var(--vgui-border-outer);
+  outline: 1px solid var(--vgui-border-inner);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.08), 
+              inset -1px -1px 0 rgba(0, 0, 0, 0.5), 
+              0 6px 16px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+  position: relative;
+}
+
+.gmod-panel::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  border-radius: inherit;
+}
